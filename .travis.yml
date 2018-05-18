@@ -1,0 +1,14 @@
+{
+  "language": "cpp",
+  "script": [
+    "mkdir -p build",
+    "cd build",
+    "cmake -DCMAKE_BUILD_TYPE=Release ..",
+    "make",
+    "./oneedit"
+  ],
+  "global_env": "CXX_FLAGS=\"-Wall -pedantic -Werror\"",
+  "os": "linux",
+  "group": "stable",
+  "dist": "trusty"
+}
