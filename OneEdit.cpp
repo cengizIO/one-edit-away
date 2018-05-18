@@ -90,3 +90,26 @@ TEST_CASE("abc === ac") {
     REQUIRE(oneEditAway("abc", "ac"));
 }
 
+TEST_CASE("cat !== dog") {
+    REQUIRE_FALSE(oneEditAway("cat", "dog"));
+}
+
+TEST_CASE("cat === cats") {
+    REQUIRE(oneEditAway("cat", "cats"));
+}
+
+TEST_CASE("cat === cut") {
+    REQUIRE(oneEditAway("cat", "cut"));
+}
+
+TEST_CASE("cat === cast") {
+    REQUIRE(oneEditAway("cat", "cast"));
+}
+
+TEST_CASE("cat === at") {
+    REQUIRE(oneEditAway("cat", "at"));
+}
+
+TEST_CASE("cat !== act") {
+    REQUIRE_FALSE(oneEditAway("cat", "act"));
+}
