@@ -8,7 +8,5 @@
     "./oneedit"
   ],
   "global_env": "CXX_FLAGS=\"-Wall -pedantic -Werror\"",
-  "os": "linux",
-  "group": "stable",
-  "dist": "trusty"
+  "os": "linux"
 }
