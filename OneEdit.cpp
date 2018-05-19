@@ -3,9 +3,8 @@
 using namespace std; // I don't do this often
 
 bool oneEditAway(string const &a, string const &b) {
-    size_t lenA = a.length();
-    size_t lenB = b.length();
-
+    const size_t lenA = a.length();
+    const size_t lenB = b.length();
     const size_t initialDiff = lenA > lenB
                                ? lenA - lenB
                                : lenB - lenA;
