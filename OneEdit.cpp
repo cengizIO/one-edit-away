@@ -19,26 +19,24 @@ bool oneEditAway(string const &a, string const &b) {
     size_t i = 0, j = 0;
 
     while (i < lenA && j < lenB) {
-        // If current characters don't match
         if (a.at(i) != b.at(j)) {
             if (diff) {
                 return false;
             }
 
-            // If length of one string is
-            // more, then only possible edit
-            // is to remove a character
+            diff = true;
+
+            // We've found a difference and if one of the strings is longer,
+            // only possible edit is to remove a character
             if (lenA > lenB) {
                 i++; // skip a character from a
             } else if (lenA < lenB) {
                 j++; // skip a character from b
-            } else {
+            } else { // Lengths are same so we hope to replace this character
                 i++;
                 j++;
             }
-
-            diff = true;
-        } else { // If current characters match
+        } else { // There's no difference. Move along...
             i++;
             j++;
         }
@@ -52,71 +50,37 @@ bool oneEditAway(string const &a, string const &b) {
     return diff;
 }
 
-
-TEST_CASE("aaa !== bbb") {
+TEST_CASE("Totally different") {
     REQUIRE_FALSE(oneEditAway("aaa", "bbb"));
-}
-
-TEST_CASE("aaa !== bcc") {
     REQUIRE_FALSE(oneEditAway("aaa", "bbbcc"));
+    REQUIRE_FALSE(oneEditAway("abc", "abde"));
+    REQUIRE_FALSE(oneEditAway("abc", "afcc"));
+    REQUIRE_FALSE(oneEditAway("cat", "dog"));
+    REQUIRE_FALSE(oneEditAway("cat", "act"));
 }
 
-TEST_CASE("bbbbbb !== bbb") {
+TEST_CASE("Way shorter") {
     REQUIRE_FALSE(oneEditAway("bbbbbb", "bbb"));
 }
 
-TEST_CASE("aaa === aab") {
+TEST_CASE("Replace a character from ends") {
     REQUIRE(oneEditAway("aaa", "aab"));
-}
-
-TEST_CASE("aaaa === aaa") {
-    REQUIRE(oneEditAway("aaaa", "aaa"));
-}
-
-TEST_CASE("abc !== bde") {
-    REQUIRE_FALSE(oneEditAway("abc", "abde"));
-}
-
-TEST_CASE("abc === abd") {
     REQUIRE(oneEditAway("abc", "abd"));
 }
 
-TEST_CASE("oabc === abc") {
-    REQUIRE(oneEditAway("oabc", "abc"));
-}
-
-TEST_CASE("abc !== fcc") {
-    REQUIRE_FALSE(oneEditAway("abc", "afcc"));
-}
-
-TEST_CASE("abc === abxc") {
-    REQUIRE(oneEditAway("abc", "abxc"));
-}
-
-TEST_CASE("abc === ac") {
-    REQUIRE(oneEditAway("abc", "ac"));
-}
-
-TEST_CASE("cat !== dog") {
-    REQUIRE_FALSE(oneEditAway("cat", "dog"));
-}
-
-TEST_CASE("cat === cats") {
-    REQUIRE(oneEditAway("cat", "cats"));
-}
-
-TEST_CASE("cat === cut") {
+TEST_CASE("Replace a character from inside") {
     REQUIRE(oneEditAway("cat", "cut"));
 }
 
-TEST_CASE("cat === cast") {
-    REQUIRE(oneEditAway("cat", "cast"));
-}
-
-TEST_CASE("cat === at") {
+TEST_CASE("Delete a character from ends") {
+    REQUIRE(oneEditAway("aaaa", "aaa"));
+    REQUIRE(oneEditAway("oabc", "abc"));
+    REQUIRE(oneEditAway("cat", "cats"));
     REQUIRE(oneEditAway("cat", "at"));
 }
 
-TEST_CASE("cat !== act") {
-    REQUIRE_FALSE(oneEditAway("cat", "act"));
+TEST_CASE("Delete a character from inside") {
+    REQUIRE(oneEditAway("abc", "abxc"));
+    REQUIRE(oneEditAway("abc", "ac"));
+    REQUIRE(oneEditAway("cat", "cast"));
 }
