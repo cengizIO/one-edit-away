@@ -3,48 +3,55 @@
 using namespace std; // I don't do this often
 
 bool oneEditAway(string const &a, string const &b) {
+    size_t lenA = a.length();
+    size_t lenB = b.length();
 
-    if (a == b) {
+    const size_t initialDiff = lenA > lenB
+                               ? lenA - lenB
+                               : lenB - lenA;
+
+    if (initialDiff > 1) {
         return false;
     }
 
-    const size_t lengthA = a.length();
-    const size_t lengthB = b.length();
+    bool diff = false;
 
-    const size_t lengthDiff = (lengthA > lengthB)
-                              ? lengthA - lengthB
-                              : lengthB - lengthA;
+    size_t i = 0, j = 0;
 
-    if (lengthDiff > 1) {
-        return false;
-    }
-
-    size_t diff = 0, i = 0, j = 0;
-
-    while (i < lengthA && j < lengthB) {
-        char f = a.at(i);
-        char s = b.at(j);
-        if (f != s) {
-            diff++;
-            if (lengthA > lengthB) {
-                i++;
-            } else if (lengthB > lengthA) {
-                j++;
-            } else { // lengthA == lengthB
-                i++;
+    while (i < lenA && j < lenB) {
+        // If current characters don't match
+        if (a.at(i) != b.at(j)) {
+            if (diff) {
+                return false;
             }
-        } else {
+
+            // If length of one string is
+            // more, then only possible edit
+            // is to remove a character
+            if (lenA > lenB) {
+                i++; // skip a character from a
+            } else if (lenA < lenB) {
+                j++; // skip a character from b
+            } else {
+                i++;
+                j++;
+            }
+
+            diff = true;
+        } else { // If current characters match
             i++;
             j++;
         }
-        if (diff > 1) {
-            return false;
-        }
     }
 
-    return true;
+    // If last character is extra in any string
+    if (i < lenA || j < lenB) {
+        diff = true;
+    }
 
+    return diff;
 }
+
 
 TEST_CASE("aaa !== bbb") {
     REQUIRE_FALSE(oneEditAway("aaa", "bbb"));
